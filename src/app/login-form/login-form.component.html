@@ -1,7 +1,7 @@
 <div class="form-staff mat-drawer-container">
-<form [formGroup]="ReactiveForm">
+<form id="forms" [formGroup]="ReactiveForm">
   <div>
-    <mat-form-field class="kistil" appearance="fill">
+    <mat-form-field class="login-width" appearance="fill">
       <mat-label>Enter your email</mat-label>
       <label>
         <input matInput placeholder="pat@example.com" [formControl]="email" required>
@@ -13,7 +13,7 @@
     <mat-form-field appearance="fill">
       <mat-label>Enter your password</mat-label>
       <label>
-        <input matInput [type]="hide ? 'password' : 'text'" [formControl]="password">
+        <input matInput [type]="hide ? 'password' : 'text'" [formControl]="password" required>
       </label>
       <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
               [attr.aria-pressed]="hide">
@@ -21,8 +21,8 @@
       </button>
     </mat-form-field>
   </div>
-  <button class="login-center" mat-flat-button>Login</button>
+  <a class="grey-color" routerLink="main"><button class="login-center" mat-flat-button type="submit" [disabled]="email.invalid || password.invalid">Login</button></a>
 </form>
-  <button class="regist-center" mat-button>Registration</button>
+  <a class="grey-color" routerLink="registration"><button class="regist-center" mat-button>Registration</button></a>
 </div>
 

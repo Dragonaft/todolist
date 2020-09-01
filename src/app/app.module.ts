@@ -7,17 +7,31 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatIconModule} from '@angular/material/icon';
+import {RouterModule, Routes} from '@angular/router';
 
 import { AppComponent } from './app.component';
 import { LoginFormComponent } from './login-form/login-form.component';
+import { RegistrationFormComponent } from './registration-form/registration-form.component';
+import {NotFoundComponent} from './app.not-found.component';
+import { TodolistComponent } from './todolist/todolist.component';
 
+
+const appRoutes: Routes = [
+  { path: '', component: LoginFormComponent},
+  { path: 'rabotai', component: TodolistComponent},
+  { path: 'registration', component: RegistrationFormComponent},
+  { path: '**', component: NotFoundComponent}
+];
 
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    LoginFormComponent
+    LoginFormComponent,
+    RegistrationFormComponent,
+    NotFoundComponent,
+    TodolistComponent
   ],
   imports: [
     BrowserModule,
@@ -28,7 +42,8 @@ import { LoginFormComponent } from './login-form/login-form.component';
     FormsModule,
     MatInputModule,
     ReactiveFormsModule,
-    MatIconModule
+    MatIconModule,
+    RouterModule.forRoot(appRoutes)
   ],
   providers: [],
   bootstrap: [AppComponent]
