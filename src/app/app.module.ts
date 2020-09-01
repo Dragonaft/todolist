@@ -18,7 +18,7 @@ import { TodolistComponent } from './todolist/todolist.component';
 
 const appRoutes: Routes = [
   { path: '', component: LoginFormComponent},
-  { path: 'rabotai', component: TodolistComponent},
+  { path: 'main', component: TodolistComponent},
   { path: 'registration', component: RegistrationFormComponent},
   { path: '**', component: NotFoundComponent}
 ];
