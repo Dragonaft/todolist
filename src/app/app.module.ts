@@ -14,6 +14,9 @@ import { LoginFormComponent } from './login-form/login-form.component';
 import { RegistrationFormComponent } from './registration-form/registration-form.component';
 import {NotFoundComponent} from './app.not-found.component';
 import { TodolistComponent } from './todolist/todolist.component';
+import {MatToolbarModule} from '@angular/material/toolbar';
+import {MatListModule} from '@angular/material/list';
+import {MatCardModule} from '@angular/material/card';
 
 
 const appRoutes: Routes = [
@@ -43,7 +46,10 @@ const appRoutes: Routes = [
     MatInputModule,
     ReactiveFormsModule,
     MatIconModule,
-    RouterModule.forRoot(appRoutes)
+    RouterModule.forRoot(appRoutes),
+    MatToolbarModule,
+    MatListModule,
+    MatCardModule
   ],
   providers: [],
   bootstrap: [AppComponent]
