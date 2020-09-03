@@ -17,7 +17,7 @@
         <mat-form-field class="example-full-width">
           <mat-label></mat-label>
           <input matInput [(ngModel)]="title" type="text"
-                 value="" class="login-width form-control">
+                  class="login-width form-control" value="{{title}}"/>
         </mat-form-field>
         <button mat-flat-button (click)="addToList()"
                 class="btn btn-light text-success margin_bottom margin_left">
@@ -39,7 +39,7 @@
     <div class=""></div>
   </div>
 
-  <div *ngFor="let x of items; let index = index;"
+  <div *ngFor="let todo of todoService.getTodos();"
        class="" style="margin-top: 20px">
 
     <div class=""></div>
@@ -48,16 +48,16 @@
 
       <mat-card>
         <!--        <mat-card-title>{{x}}</mat-card-title>-->
-        <mat-card-content>{{x}}</mat-card-content>
+        <mat-card-content>{{[todo.text]}}</mat-card-content>
       </mat-card>
 <!--      <input  (click)="deleteTask(index)" type="button"-->
 <!--             value="Delete" class="col-2 btn btn-danger">-->
     </div>
-    <button mat-flat-button (click)="deleteTask(index)"
+    <button mat-flat-button (click)="todoService.removeTodo(todo.id)"
             class="btn btn-light text-success margin_top margin_bottom">
       Delete
     </button>
-    <button mat-flat-button (click)="deleteTask(index)"
+    <button mat-flat-button (click)="todoService.removeTodo()"
             class="btn btn-light text-success margin_top margin_bottom margin_left">
       11
     </button>
