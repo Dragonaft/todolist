@@ -1,9 +1,19 @@
 <span>
   <mat-toolbar>
     <span>My Application</span>
-      <button mat-icon-button class="example-icon left_kostil" aria-label="Example icon-button with menu icon">
-        <mat-icon>menu</mat-icon>
-      </button>
+      <button class="left_kostil" mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+  <mat-icon>more_vert</mat-icon>
+</button>
+<mat-menu #menu="matMenu">
+  <button mat-menu-item routerLink="profile">
+    <mat-icon>dialpad</mat-icon>
+    <span>Profile</span>
+  </button>
+  <button mat-menu-item routerLink="">
+    <mat-icon>home icon</mat-icon>
+    <span>Exit</span>
+  </button>
+</mat-menu>
   </mat-toolbar>
 </span>
 
@@ -17,7 +27,7 @@
         <mat-form-field class="example-full-width">
           <mat-label></mat-label>
           <input matInput [(ngModel)]="title" type="text"
-                  class="login-width form-control" value="{{title}}"/>
+                 class="login-width form-control" value="{{title}}"/>
         </mat-form-field>
         <button mat-flat-button (click)="addToList()"
                 class="btn btn-light text-success margin_bottom margin_left">
@@ -50,8 +60,8 @@
         <!--        <mat-card-title>{{x}}</mat-card-title>-->
         <mat-card-content>{{[todo.text]}}</mat-card-content>
       </mat-card>
-<!--      <input  (click)="deleteTask(index)" type="button"-->
-<!--             value="Delete" class="col-2 btn btn-danger">-->
+      <!--      <input  (click)="deleteTask(index)" type="button"-->
+      <!--             value="Delete" class="col-2 btn btn-danger">-->
     </div>
     <button mat-flat-button (click)="todoService.removeTodo(todo.id)"
             class="btn btn-light text-success margin_top margin_bottom">
