@@ -21,7 +21,7 @@ import { TodolistComponent } from './todolist/todolist.component';
 import { ProfileComponent } from './profile/profile.component';
 import {MatMenuModule} from '@angular/material/menu';
 import { StoreModule } from '@ngrx/store';
-import { reducers, metaReducers } from './reducers';
+import { userReducers } from './store/reducers/user.reducers';
 import { StoreRouterConnectingModule } from '@ngrx/router-store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
@@ -64,9 +64,6 @@ const appRoutes: Routes = [
     MatExpansionModule,
     MatMenuModule,
     StoreModule.forRoot({}, {}),
-    StoreModule.forRoot(reducers, {
-      metaReducers
-    }),
     StoreRouterConnectingModule.forRoot(),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
     EffectsModule.forRoot([])

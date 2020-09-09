@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import {StorageService} from '../services/storage.service';
 
 @Component({
   selector: 'app-todolist',
@@ -12,9 +11,9 @@ export class TodolistComponent{
   public title: string;
   // public text;
 
-  constructor(public todoService: StorageService) {
-    this.title = '';
-  }
+  // constructor(public todoService: StorageService) {
+  //   this.title = '';
+  // }
 
   // tslint:disable-next-line:typedef
   // public addToList() {
@@ -26,9 +25,9 @@ export class TodolistComponent{
   //   this.items.splice(index, 1);
   // }
 
-  public addToList(): void {
-    this.todoService.addToList(this.title);
-    this.title = '';
-  }
+  // public addToList(): void {
+  //   this.todoService.addToList(this.title);
+  //   this.title = '';
+  // }
 
 }

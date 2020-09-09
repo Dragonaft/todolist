@@ -1,10 +1,14 @@
 <span>
   <mat-toolbar>
-    <span>My Application</span>
-      <button class="left_kostil" mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+    <span>Профиль</span>
+      <button class="left-kostil-top" mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
   <mat-icon>more_vert</mat-icon>
 </button>
 <mat-menu #menu="matMenu">
+    <button mat-menu-item routerLink="main">
+    <mat-icon>dialpad</mat-icon>
+    <span>Back</span>
+  </button>
   <button mat-menu-item routerLink="">
     <mat-icon>home icon</mat-icon>
     <span>Exit</span>
@@ -12,3 +16,33 @@
 </mat-menu>
   </mat-toolbar>
 </span>
+<div class="form-staff mat-drawer-container margin_top">
+  <div>
+    <mat-form-field appearance="fill">
+      <mat-label>Имя</mat-label>
+      <input matInput>
+    </mat-form-field>
+    <mat-form-field class="margin_left" appearance="fill">
+      <mat-label>Фамилия</mat-label>
+      <input matInput>
+    </mat-form-field>
+  </div>
+  <div>
+    <mat-form-field class="login-width" appearance="fill">
+      <mat-label>Логин</mat-label>
+      <input matInput>
+    </mat-form-field>
+  </div>
+  <div>
+    <mat-form-field class="login-width" appearance="fill">
+      <mat-label>email</mat-label>
+      <input matInput>
+    </mat-form-field>
+  </div>
+  <div>
+    <mat-form-field class="login-width" appearance="fill">
+      <mat-label>Пароль</mat-label>
+      <input matInput>
+    </mat-form-field>
+  </div>
+</div>

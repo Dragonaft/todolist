@@ -1,0 +1,63 @@
+.example-container .mat-form-field + .mat-form-field {
+  margin-left: 50px;
+}
+
+.example-right-align {
+  text-align: right;
+}
+
+input.example-right-align::-webkit-outer-spin-button,
+input.example-right-align::-webkit-inner-spin-button {
+  display: none;
+}
+
+input.example-right-align {
+  -moz-appearance: textfield;
+}
+
+.form-staff{
+  padding: 20px;
+  position: absolute; left: 39%;
+  border-radius: 20px;
+}
+
+.regist-center{
+  position: relative;
+  left: 50%;
+  transform: translate(-50%, 0);
+  margin-top: 7%;
+}
+
+.login-center{
+  position: relative;
+  left: 50%;
+  transform: translate(-50%, 0);
+}
+
+.margin_top{
+  margin-top: 10px;
+}
+
+.margin_bottom{
+  margin-bottom: 10px;
+}
+
+.login-width{
+  width: 100%;
+}
+
+.margin_left{
+  margin-left: 5px;
+}
+
+.grey-color{
+  color: gray;
+}
+
+.left_kostil{
+  margin-left: 90%;
+}
+
+.left-kostil-top{
+  margin-left: 93%;
+}
