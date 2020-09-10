@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {FormControl, Validators, FormGroup} from '@angular/forms';
 import {ApiService} from '../services/api.service';
 import {UserInterface} from '../Interfaces/UserInterface';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-login-form',
@@ -11,7 +12,8 @@ import {UserInterface} from '../Interfaces/UserInterface';
 
 export class LoginFormComponent implements OnInit {
 
-  constructor(private apiService: ApiService) {
+  constructor(private apiService: ApiService,
+              private router: Router) {
   }
 
   public loginForm = new FormGroup({
@@ -38,15 +40,21 @@ export class LoginFormComponent implements OnInit {
     return this.loginForm.controls.password.hasError ? 'Not a valid password' : '';
   }
 
-  public passLogin(): any{
-    this.apiService.getData().subscribe( (data: Array<UserInterface>) => {
-      this.users = data;
-    });
+  public login(): any{
+    const body =  this.loginForm.getRawValue();
 
+    this.apiService.login(body).subscribe( user => {
+      if (user){
+        this.router.navigateByUrl('profile');
+      }
+    });
   }
+
 
   ngOnInit(): void {
   }
 }
+
+
 
 

@@ -1,5 +1,5 @@
 <div class="form-staff mat-drawer-container">
-<form id="forms" [formGroup]="loginForm">
+<form id="forms" (ngSubmit)="login()" [formGroup]="loginForm">
   <div>
     <mat-form-field class="login-width" appearance="fill">
       <mat-label>Enter your email</mat-label>
@@ -22,7 +22,7 @@
       </button>
     </mat-form-field>
   </div>
-  <button class="login-center" mat-flat-button routerLink="main" type="submit" [disabled]="loginForm.invalid">Login</button>
+  <button class="login-center" mat-flat-button type="submit" [disabled]="loginForm.invalid">Login</button>
 </form>
   <button class="regist-center" routerLink="registration" mat-button>Registration</button>
 </div>
