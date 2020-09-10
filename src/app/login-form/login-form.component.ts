@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import {FormControl, Validators, FormGroup, FormBuilder} from '@angular/forms';
+import {Component, OnInit} from '@angular/core';
+import {FormControl, Validators, FormGroup} from '@angular/forms';
+import {ApiService} from '../services/api.service';
+import {UserInterface} from '../Interfaces/UserInterface';
 
 @Component({
   selector: 'app-login-form',
@@ -8,30 +10,42 @@ import {FormControl, Validators, FormGroup, FormBuilder} from '@angular/forms';
 })
 
 export class LoginFormComponent implements OnInit {
-  email = new FormControl('', [Validators.required, Validators.email]);
-  password = new FormControl('', [Validators.required]);
-  hide = true;
-  ReactiveForm: FormGroup;
-  constructor(private fb: FormBuilder){}
 
-  // tslint:disable-next-line:typedef
-  getErrorMessage() {
-    if (this.email.hasError('required')) {
+  constructor(private apiService: ApiService) {
+  }
+
+  public loginForm = new FormGroup({
+    email: new FormControl('', [Validators.required, Validators.email]),
+    password: new FormControl('', [Validators.required])
+  });
+
+  hide = true;
+
+  public users: Array<UserInterface> = [];
+
+  getErrorMessageEmail(): string {
+    if (this.loginForm.controls.email.hasError('required')) {
       return 'You must enter a value';
     }
 
-    return this.email.hasError('email') ? 'Not a valid email' : '';
+    return this.loginForm.controls.email.hasError ? 'Not a valid email' : '';
   }
-  // tslint:disable-next-line:typedef
-  ngOnInit(){
-    this.initForm();
+
+  getErrorMessagePassword(): string {
+    if (this.loginForm.controls.password.hasError('required')) {
+      return 'You must enter a value';
+    }
+    return this.loginForm.controls.password.hasError ? 'Not a valid password' : '';
   }
-  // tslint:disable-next-line:typedef
-  initForm(){
-    this.ReactiveForm = this.fb.group({
-      email: [null],
-      password: [null]
+
+  public passLogin(): any{
+    this.apiService.getData().subscribe( (data: Array<UserInterface>) => {
+      this.users = data;
     });
+
+  }
+
+  ngOnInit(): void {
   }
 }
 

@@ -1,27 +1,39 @@
 <div class="form-staff mat-drawer-container">
-  <form id="forms" [formGroup]="ReactiveForm">
+  <form id="forms" [formGroup]="registerForm" (ngSubmit)="pushData()">
+    <div>
+      <mat-form-field class="login-width" appearance="fill">
+        <mat-label>Enter your login</mat-label>
+        <label>
+          <input id="login" matInput placeholder="example" formControlName="login" required>
+        </label>
+        <mat-error *ngIf="registerForm.controls['login'].invalid">{{getErrorMessageLogin()}}</mat-error>
+      </mat-form-field>
+    </div>
     <div>
       <mat-form-field class="login-width" appearance="fill">
         <mat-label>Enter your email</mat-label>
         <label>
-          <input matInput placeholder="pat@example.com" [formControl]="email" required>
+          <input id="email" matInput placeholder="pat@example.com" formControlName="email" required>
         </label>
-        <mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error>
+        <mat-error *ngIf="registerForm.controls['email'].invalid">{{getErrorMessageEmail()}}</mat-error>
       </mat-form-field>
     </div>
     <div>
       <mat-form-field appearance="fill">
         <mat-label>Enter your password</mat-label>
         <label>
-          <input matInput [type]="hide ? 'password' : 'text'" [formControl]="password" required>
+          <input id="password" minlength="6" matInput [type]="hide ? 'password' : 'text'" formControlName="password" required>
         </label>
+        <mat-error *ngIf="registerForm.controls['password'].invalid">{{getErrorMessagePassword()}}</mat-error>
         <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
                 [attr.aria-pressed]="hide">
           <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
         </button>
       </mat-form-field>
     </div>
-    <button class="login-center" mat-flat-button type="submit" [disabled]="email.invalid || password.invalid">Registration</button>
+    <button class="login-center" mat-flat-button type="submit"
+            [disabled]="registerForm.invalid"
+    >Registration</button>
   </form>
  <button class="regist-center" routerLink="" mat-button>Back to login</button>
 </div>

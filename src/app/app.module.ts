@@ -26,6 +26,8 @@ import { StoreRouterConnectingModule } from '@ngrx/router-store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
 import { EffectsModule } from '@ngrx/effects';
+import {HttpClientModule} from '@angular/common/http';
+import {ApiService} from './services/api.service';
 
 
 const appRoutes: Routes = [
@@ -54,6 +56,7 @@ const appRoutes: Routes = [
     MatButtonModule,
     MatFormFieldModule,
     FormsModule,
+    HttpClientModule,
     MatInputModule,
     ReactiveFormsModule,
     MatIconModule,
@@ -68,7 +71,7 @@ const appRoutes: Routes = [
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
     EffectsModule.forRoot([])
   ],
-  providers: [],
+  providers: [ApiService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

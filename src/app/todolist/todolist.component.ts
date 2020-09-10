@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import {UserInterface} from '../Interfaces/UserInterface';
 
 @Component({
   selector: 'app-todolist',
@@ -10,7 +12,8 @@ export class TodolistComponent{
   // public itemtext = [];
   public title: string;
   // public text;
-
+  constructor() {
+  }
   // constructor(public todoService: StorageService) {
   //   this.title = '';
   // }
@@ -31,3 +34,4 @@ export class TodolistComponent{
   // }
 
 }
+
