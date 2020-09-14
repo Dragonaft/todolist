@@ -28,7 +28,8 @@ import { environment } from '../environments/environment';
 import { EffectsModule } from '@ngrx/effects';
 import {HttpClientModule} from '@angular/common/http';
 import {ApiService} from './services/api.service';
-
+import {ToDoReducer} from './store/reducers/todo.reducers';
+import {ToDoEffects} from './store/effects/todo.effects';
 
 const appRoutes: Routes = [
   { path: '', component: LoginFormComponent},
@@ -66,10 +67,12 @@ const appRoutes: Routes = [
     MatCardModule,
     MatExpansionModule,
     MatMenuModule,
-    StoreModule.forRoot({}, {}),
+    // StoreModule.forRoot({}, {}),
     StoreRouterConnectingModule.forRoot(),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
-    EffectsModule.forRoot([])
+    EffectsModule.forRoot([]),
+    StoreModule.forRoot({ todos: ToDoReducer }),
+    EffectsModule.forRoot([ToDoEffects])
   ],
   providers: [ApiService],
   bootstrap: [AppComponent]
