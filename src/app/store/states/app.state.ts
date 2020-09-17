@@ -13,3 +13,4 @@ export const initialAppState: InterfaceAppState = {
 export function getInitialState(): InterfaceAppState {
   return initialAppState;
 }
+

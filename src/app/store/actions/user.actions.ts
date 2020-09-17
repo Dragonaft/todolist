@@ -26,4 +26,7 @@ export class GetUserSuccess implements Action {
   constructor( public payload: UserInterface){}
 }
 
-export type UserActions = GetUser | GetUsers | GetUsersSuccess | GetUserSuccess;
+export type UserActions = GetUser
+  | GetUsers
+  | GetUsersSuccess
+  | GetUserSuccess;

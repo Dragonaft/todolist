@@ -10,14 +10,22 @@ export class ApiService{
   constructor(private http: HttpClient){ }
 
   public getData(): Observable<any> {
-    return this.http.get('http://localhost:8000/user_list');
+    return this.http.get(`${environment.api}/user_lists`);
   }
 
   public pushData(body: {login: any, email: any, password: any}): Observable<any> {
-    return this.http.post('http://localhost:8000/user_list', body);
+    return this.http.post(`${environment.api}/user_list`, body);
   }
 
   public login( body: { email: string, password: string}): Observable<any> {
-    return this.http.post(`${environment.api} /users/login`, body);
+    return this.http.post(`${environment.api}/user_list/login`, body);
+  }
+
+  public getToDo(): Observable<any>{
+    return this.http.get(`${environment.api}/todolist`);
+  }
+
+  public deleteTodo(id: number): Observable<any> {
+    return this.http.delete(`${environment.api}/todolist/${id}`);
   }
 }

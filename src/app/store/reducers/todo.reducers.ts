@@ -21,8 +21,10 @@ const reducer = createReducer(
   on(ToDoActions.ErrorToDoAction, (state: ToDoState, error: Error) => {
     console.log(error);
     return { ...state, ToDoError: error };
-  })
-);
+  }),
+  on(ToDoActions.DeleteToDoAction, (state: ToDoState) => {
+    return { ...state};
+  }));
 
 // tslint:disable-next-line:typedef
 export function ToDoReducer(state: ToDoState | undefined, action: Action) {

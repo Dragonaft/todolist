@@ -3,6 +3,7 @@ import {FormControl, Validators, FormGroup} from '@angular/forms';
 import {ApiService} from '../services/api.service';
 import {UserInterface} from '../Interfaces/UserInterface';
 import {Router} from '@angular/router';
+import {map} from 'rxjs/operators';
 
 @Component({
   selector: 'app-login-form',
@@ -24,7 +25,6 @@ export class LoginFormComponent implements OnInit {
   hide = true;
 
   public users: Array<UserInterface> = [];
-
   getErrorMessageEmail(): string {
     if (this.loginForm.controls.email.hasError('required')) {
       return 'You must enter a value';
@@ -42,10 +42,9 @@ export class LoginFormComponent implements OnInit {
 
   public login(): any{
     const body =  this.loginForm.getRawValue();
-
     this.apiService.login(body).subscribe( user => {
       if (user){
-        this.router.navigateByUrl('profile');
+        this.router.navigateByUrl('main');
       }
     });
   }

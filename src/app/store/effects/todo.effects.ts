@@ -7,6 +7,7 @@ import { Observable, of } from 'rxjs';
 import { catchError, map, mergeMap } from 'rxjs/operators';
 import ToDo from '../../Interfaces/ToDoModel';
 import * as ToDoActions from '../actions/todo.action';
+import { ApiService } from '../../services/api.service';
 
 @Injectable()
 // @ts-ignore
@@ -19,7 +20,9 @@ export class ToDoEffects {
     this.action$.pipe(
       ofType(ToDoActions.BeginGetToDoAction),
       mergeMap(action =>
-        this.http.get(this.ApiURL).pipe(
+        this.http
+          .get(this.ApiURL)
+          .pipe(
           map((data: ToDo[]) => {
             return ToDoActions.SuccessGetToDoAction({ payload: data });
           }),

@@ -9,6 +9,8 @@ import ToDo from '../Interfaces/ToDoModel';
 import ActionWithPayload from '../store/actions/ActionWithPayload';
 import { map } from 'rxjs/operators';
 import ToDoState from '../store/state/ToDoState';
+import {ApiService} from '../services/api.service';
+import ToDoModel from '../Interfaces/ToDoModel';
 
 @Component({
   selector: 'app-todolist',
@@ -53,11 +55,12 @@ export class TodolistComponent implements OnInit, OnDestroy {
   todo$: Observable<ToDoState>;
   ToDoSubscription: Subscription;
   ToDoList: ToDo[] = [];
-
-  description: string = '';
+  todos: Array<ToDoModel> = [];
+  description = '';
+  id: number;
 
   todoError: Error = null;
-  constructor(private store: Store<{ todos: ToDoState }>) {
+  constructor(private apiService: ApiService, private store: Store<{ todos: ToDoState }>) {
     this.todo$ = store.pipe(select('todos'));
   }
 
@@ -76,9 +79,16 @@ export class TodolistComponent implements OnInit, OnDestroy {
 
   // tslint:disable-next-line:typedef
   createToDo() {
-    const todo: ToDo = { description: this.description };
+    const todo: ToDo = { id: this.id, description: this.description };
     this.store.dispatch(ToDoActions.BeginCreateToDoAction({ payload: todo }));
     this.description = '';
+  }
+
+  public deleteTodo(id: number): void {
+    this.apiService.deleteTodo(id).subscribe( (data) => {
+      this.todos = this.todos.filter( todo => todo.id !== id);
+      this.store.dispatch(ToDoActions.BeginGetToDoAction());
+    });
   }
 
   // tslint:disable-next-line:typedef

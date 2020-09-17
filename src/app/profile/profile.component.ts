@@ -13,7 +13,7 @@ export class ProfileComponent implements OnInit {
 
   public users: Array<UserInterface> = [];
 
-  public ngOnInit() {
+  public ngOnInit(): void {
 
       this.apiService.getData().subscribe( (data: Array<UserInterface>) => {
         this.users = data;
