@@ -1,6 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {filter} from 'rxjs/operators';
+import {select, Store} from '@ngrx/store';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {Subscription} from 'rxjs';
+
 import {ApiService} from '../services/api.service';
+import {LogoutAction, UsersListRequestAction} from '../store/actions/user.actions';
+import ToDoModel from '../Interfaces/ToDoModel';
+import {UserInterface} from '../Interfaces/UserInterface';
+import {selectUsersItems} from '../store/selectors/user.selector';
 
 @Component({
   selector: 'app-registration-form',
@@ -15,8 +23,13 @@ export class RegistrationFormComponent implements OnInit {
     login: new FormControl('', [Validators.required]),
   });
 
+  public users$ = this.store.pipe(select(selectUsersItems), filter(Boolean));
+  public users: Array<UserInterface> = [];
+  public subscriptions: Array<Subscription> = [];
+
   public hide = true;
-  constructor(private apiService: ApiService){}
+  constructor(private apiService: ApiService,
+              private store: Store,){}
 
   getErrorMessageEmail(): string {
     if (this.registerForm.controls.email.hasError('required')) {
@@ -40,19 +53,20 @@ export class RegistrationFormComponent implements OnInit {
   }
 
   public ngOnInit(): void{
-
+    this.load();
+    this.subscriptions.push(
+      this.users$.subscribe( (todos: Array<ToDoModel>) => {
+        this.users = this.users;
+      })
+    );
   }
 
-  public pushData(): void {
-    const data = this.registerForm.getRawValue();
-    console.log(data);
-    // const loginV = (document.getElementById('login') as HTMLInputElement).value;
-    // console.log(loginV);
-    // const emailV = (document.getElementById('email') as HTMLInputElement).value;
-    // console.log(emailV);
-    // const passwordV = (document.getElementById('password') as HTMLInputElement).value;
-    // console.log(passwordV);
-    this.apiService.pushData(data).subscribe();
-    // console.log('good');
+  public load(): void {
+     this.store.dispatch( new UsersListRequestAction());
+  }
+
+  public register(): void {
+    const body = this.registerForm.getRawValue();
+    this.apiService.createUser(body).subscribe(console.log);
   }
 }

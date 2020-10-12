@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import {InjectionToken, NgModule} from '@angular/core';
 import { MatSliderModule } from '@angular/material/slider';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
@@ -20,16 +20,18 @@ import {NotFoundComponent} from './app.not-found.component';
 import { TodolistComponent } from './todolist/todolist.component';
 import { ProfileComponent } from './profile/profile.component';
 import {MatMenuModule} from '@angular/material/menu';
-import { StoreModule } from '@ngrx/store';
-import { userReducers } from './store/reducers/user.reducers';
+import { StoreModule, ActionReducerMap } from '@ngrx/store';
+import { userReduce } from './store/reducers/user.reducers';
 import { StoreRouterConnectingModule } from '@ngrx/router-store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
 import { EffectsModule } from '@ngrx/effects';
 import {HttpClientModule} from '@angular/common/http';
 import {ApiService} from './services/api.service';
-import {ToDoReducer} from './store/reducers/todo.reducers';
-import {ToDoEffects} from './store/effects/todo.effects';
+import {todosReduce} from './store/reducers/todo.reducers';
+import {TodosEffects} from './store/effects/todo.effect';
+import {AppState, metaReducers, reducers} from './store/reducers';
+import {UsersEffects} from './store/effects/users.effect';
 
 const appRoutes: Routes = [
   { path: '', component: LoginFormComponent},
@@ -39,6 +41,7 @@ const appRoutes: Routes = [
   { path: '**', component: NotFoundComponent}
 ];
 
+const REDUCER_TOKEN = new InjectionToken<ActionReducerMap<AppState>>('root reducer');
 
 
 @NgModule({
@@ -69,12 +72,19 @@ const appRoutes: Routes = [
     MatMenuModule,
     // StoreModule.forRoot({}, {}),
     StoreRouterConnectingModule.forRoot(),
-    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
+    // StoreDevtoolsModule.instrument({ maxAge: 25}),
     EffectsModule.forRoot([]),
-    StoreModule.forRoot({ todos: ToDoReducer }),
-    EffectsModule.forRoot([ToDoEffects])
+    // StoreModule.forRoot(REDUCER_TOKEN, {metaReducers}),
+    StoreModule.forRoot(reducers, {metaReducers: []}),
+    !environment.production
+      ? StoreDevtoolsModule.instrument({ maxAge: 50 })
+      : [],
+    EffectsModule.forRoot([TodosEffects, UsersEffects])
   ],
-  providers: [ApiService],
+  providers: [ApiService, {
+    provide: REDUCER_TOKEN,
+    useValue: reducers
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

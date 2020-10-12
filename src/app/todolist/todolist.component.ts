@@ -1,102 +1,84 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import {UserInterface} from '../Interfaces/UserInterface';
-import { Store, select, Action } from '@ngrx/store';
-import { Observable, Subscription } from 'rxjs';
-import * as ToDoActions from '../store/actions/todo.action';
-import { ToDoReducer } from '../store/reducers/todo.reducers';
-import ToDo from '../Interfaces/ToDoModel';
-import ActionWithPayload from '../store/actions/ActionWithPayload';
-import { map } from 'rxjs/operators';
-import ToDoState from '../store/state/ToDoState';
+import {Component, OnInit, OnDestroy} from '@angular/core';
+import {Store, select} from '@ngrx/store';
+import {filter, map} from 'rxjs/operators';
 import {ApiService} from '../services/api.service';
 import ToDoModel from '../Interfaces/ToDoModel';
+import {environment} from '../../environments/environment';
+import {selectTodosItems} from '../store/selectors/todo.selector';
+import {TodosAddRequestAction, TodosListRequestAction, TodosRemoveRequestAction} from '../store/actions/todo.action';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {Observable, Subscription} from 'rxjs';
+import {Router} from '@angular/router';
+import {LogoutAction} from '../store/actions/user.actions';
+import {UserInterface} from '../Interfaces/UserInterface';
+import {selectActive} from '../store/selectors/user.selector';
 
 @Component({
   selector: 'app-todolist',
   templateUrl: './todolist.component.html',
   styleUrls: ['./todolist.component.css']
 })
-// export class TodolistComponent implements OnInit, OnDestroy{
-  // public items = [];
-  // // public itemtext = [];
-  // public title: string;
-  // public text;
-  // constructor() {
-  // }
-  // constructor(public todoService: StorageService) {
-  //   this.title = '';
-  // }
-
-  // tslint:disable-next-line:typedef
-  // public addToList() {
-  //     this.items.push(this.title);
-  //     this.title = '';
-  // }
-  // tslint:disable-next-line:typedef
-  // public deleteTask(index) {
-  //   this.items.splice(index, 1);
-  // }
-
-  // public addToList(): void {
-  //   this.todoService.addToList(this.title);
-  //   this.title = '';
-  // }
-
-  //
-  // ToDoState$: Observable<ToDoState>;
-  // ToDoSubscription: Subscription;
-  // Title: string;
-  // ToDoList: ToDo[];
-
-// }
 
 export class TodolistComponent implements OnInit, OnDestroy {
-  todo$: Observable<ToDoState>;
-  ToDoSubscription: Subscription;
-  ToDoList: ToDo[] = [];
-  todos: Array<ToDoModel> = [];
-  description = '';
-  id: number;
-
-  todoError: Error = null;
-  constructor(private apiService: ApiService, private store: Store<{ todos: ToDoState }>) {
-    this.todo$ = store.pipe(select('todos'));
+  constructor(private apiService: ApiService,
+              private store: Store,
+              private router: Router) {
   }
 
-  ngOnInit(): void {
-    this.ToDoSubscription = this.todo$
-      .pipe(
-        map(x => {
-          this.ToDoList = x.ToDos;
-          this.todoError = x.ToDoError;
-        })
-      )
-      .subscribe();
+  public subscriptions: Array<Subscription> = [];
+  todos: Array<ToDoModel>;
+  public todos$ = this.store.pipe(select(selectTodosItems), filter(Boolean));
+  private $user = this.store.pipe(select(selectActive), filter(Boolean));
+  public user: UserInterface;
 
-    this.store.dispatch(ToDoActions.BeginGetToDoAction());
+  public newTodo = new FormGroup(
+    {
+      description: new FormControl('', [
+        Validators.required
+      ]),
+    }
+  );
+
+  ngOnInit(): void {
+    this.load();
+    this.subscriptions.push(
+      this.$user.subscribe((data: any) => {
+        this.user = data.user;
+      })
+    );
+    this.subscriptions.push(
+      this.todos$.subscribe((todos: Array<ToDoModel>) => {
+        this.todos = todos.filter(x => x.userListId === this.user.id);
+      })
+    );
   }
 
   // tslint:disable-next-line:typedef
-  createToDo() {
-    const todo: ToDo = { id: this.id, description: this.description };
-    this.store.dispatch(ToDoActions.BeginCreateToDoAction({ payload: todo }));
-    this.description = '';
+  public createToDo(): void {
+    this.store.dispatch(new TodosAddRequestAction({...this.newTodo.getRawValue(), userListId: this.user.id}));
+    // console.log(this.newTodo.getRawValue());
+    // this.apiService.createTodo(this.newTodo.getRawValue()).subscribe((todo) => {
+    //   this.todos = [...this.todos, todo];
+    // });
+    this.newTodo.reset();
+  }
+
+  public logOut(): void {
+    this.store.dispatch(new LogoutAction());
+    this.router.navigateByUrl('/');
   }
 
   public deleteTodo(id: number): void {
-    this.apiService.deleteTodo(id).subscribe( (data) => {
-      this.todos = this.todos.filter( todo => todo.id !== id);
-      this.store.dispatch(ToDoActions.BeginGetToDoAction());
-    });
+    this.store.dispatch(new TodosRemoveRequestAction(id));
+    this.load();
   }
 
-  // tslint:disable-next-line:typedef
-
+  public load(): void {
+    this.store.dispatch(new TodosListRequestAction());
+  }
 
   ngOnDestroy(): void {
-    if (this.ToDoSubscription) {
-      this.ToDoSubscription.unsubscribe();
-    }
+    this.subscriptions.forEach(s => s.unsubscribe());
+    this.store.dispatch(new TodosListRequestAction());
   }
 }

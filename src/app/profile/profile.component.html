@@ -20,29 +20,30 @@
   <div>
     <mat-form-field appearance="fill">
       <mat-label>Имя</mat-label>
-      <input matInput [defaultValue]=users[0]?.first_name>
+      <input matInput [defaultValue]=user.first_name>
     </mat-form-field>
     <mat-form-field class="margin_left" appearance="fill">
       <mat-label>Фамилия</mat-label>
-      <input matInput [defaultValue]=users[0]?.last_name>
+      <input matInput [defaultValue]=user.last_name>
     </mat-form-field>
   </div>
   <div>
     <mat-form-field class="login-width" appearance="fill">
       <mat-label>Логин</mat-label>
-      <input matInput [defaultValue]=users[0]?.login>
+      <input matInput [defaultValue]=user.login>
     </mat-form-field>
   </div>
   <div>
     <mat-form-field class="login-width" appearance="fill">
       <mat-label>email</mat-label>
-      <input matInput [defaultValue]=users[0]?.email>
+      <input matInput [defaultValue]=user.email>
     </mat-form-field>
   </div>
   <div>
     <mat-form-field class="login-width" appearance="fill">
       <mat-label>Пароль</mat-label>
-      <input matInput [defaultValue]=users[0]?.password>
+      <input matInput [defaultValue]=user.password>
     </mat-form-field>
   </div>
+  <button (click)="updateUser()">submit</button>
 </div>
